@@ -1,0 +1,24 @@
+GET http://localhost:3003/blogs
+
+###
+GET http://localhost:3003/blogs/642f7d114f8eeb92e2c7e0a2
+
+###
+GET http://localhost:3003/blogs/642f7db74f8eeb92e2c7e0a6
+
+###
+DELETE http://localhost:3003/blogs/4
+
+###
+Get http://localhost:3003/info
+
+###
+POST http://localhost:3003/api/persons
+Content-Type: application/json
+
+{
+  "title": "Can iPhone do that?",
+  "author": "Tom Hanks",
+  "url": "hanks.com",
+  "likes": 8
+}

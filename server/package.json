@@ -1,0 +1,38 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "small app for adding, saving and showing blogs",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --inspect index.js",
+    "test": "test",
+    "lint": "eslint",
+    "build:ui": "rm -rf build && cd ../frontend && npm run build && cp -r build ../backend",
+    "deploy:full": "npm run build:ui && git add . && git commit -m uibuild && git push"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tzhang318/blog.git"
+  },
+  "keywords": [
+    "blog"
+  ],
+  "author": "Tim Zhang",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tzhang318/blog/issues"
+  },
+  "homepage": "https://github.com/tzhang318/blog#readme",
+  "devDependencies": {
+    "eslint": "^8.37.0",
+    "eslint-plugin-react": "^7.32.2",
+    "nodemon": "^2.0.22"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.3"
+  }
+}
