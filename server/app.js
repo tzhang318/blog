@@ -31,7 +31,10 @@ app.use(middleware.requestLogger);
 
 app.use('/login', loginRouter);
 app.use('/users', usersRouter);
-app.use('/blogs', blogsRouter);
+app.use('/blogs', middleware.tokenExtractor, blogsRouter);
+// use more middleware in the route:
+// app.get(‘/api/login’,verifyToken,<midlw 02>…<midlw 03>,(req,res))
+
 app.use('/info', infoRouter);
 
 app.use(middleware.unknownEndpoint);

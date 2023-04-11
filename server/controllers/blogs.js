@@ -1,15 +1,8 @@
 const jwt = require('jsonwebtoken');
+const middleware = require('../utils/middleware');
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 const User = require('../models/user');
-
-const tokenExtractor = (req) => {
-  const authorization = req.get('authorization');
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7);
-  }
-  return null;
-};
 
 // error handling is done in middleware by this
 // library: express-async-errors
@@ -38,12 +31,12 @@ blogsRouter.put('/:id', async (req, res) => {
   res.json(result);
 });
 
-blogsRouter.delete('/:id', async (req, res) => {
+blogsRouter.delete('/:id', middleware.tokenExtractor, async (req, res) => {
   const found = await Blog.findById(req.params.id);
   if (!found) {
     res.status(404).json({ error: 'delete blog failed: NOT found' });
   }
-  const verifiedToken = jwt.verify(tokenExtractor(req), process.env.SECRET);
+  const verifiedToken = jwt.verify(req.token, process.env.SECRET);
   if (!verifiedToken.id || verifiedToken.id.toString() !== found.user?.toString()) {
     res.status(401).json({ error: 'delete blog failed: NOT authorized' }).end();
   } else {
@@ -52,11 +45,10 @@ blogsRouter.delete('/:id', async (req, res) => {
   }
 });
 
-blogsRouter.post('/', async (req, res) => {
-  const token = tokenExtractor(req);
+blogsRouter.post('/', middleware.tokenExtractor, async (req, res) => {
   const decodedToken =
     jwt.verify(
-      token,
+      req.token,
       process.env.SECRET,
       { expiresIn: 30 * 60 } // token expires in 30 * 60 seconds, half hour
     );
