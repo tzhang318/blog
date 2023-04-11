@@ -31,7 +31,7 @@ app.use(middleware.requestLogger);
 
 app.use('/login', loginRouter);
 app.use('/users', usersRouter);
-app.use('/blogs', middleware.tokenExtractor, blogsRouter);
+app.use('/blogs', middleware.tokenExtractor, middleware.userExtractor, blogsRouter);
 // use more middleware in the route:
 // app.get(‘/api/login’,verifyToken,<midlw 02>…<midlw 03>,(req,res))
 

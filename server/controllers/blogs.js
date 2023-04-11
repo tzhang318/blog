@@ -1,8 +1,6 @@
-const jwt = require('jsonwebtoken');
 const middleware = require('../utils/middleware');
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
-const User = require('../models/user');
 
 // error handling is done in middleware by this
 // library: express-async-errors
@@ -31,46 +29,42 @@ blogsRouter.put('/:id', async (req, res) => {
   res.json(result);
 });
 
-blogsRouter.delete('/:id', middleware.tokenExtractor, async (req, res) => {
-  const found = await Blog.findById(req.params.id);
-  if (!found) {
-    res.status(404).json({ error: 'delete blog failed: NOT found' });
-  }
-  const verifiedToken = jwt.verify(req.token, process.env.SECRET);
-  if (!verifiedToken.id || verifiedToken.id.toString() !== found.user?.toString()) {
-    res.status(401).json({ error: 'delete blog failed: NOT authorized' }).end();
-  } else {
-    await Blog.findByIdAndRemove(req.params.id);
-    res.status(204).end();
-  }
-});
-
-blogsRouter.post('/', middleware.tokenExtractor, async (req, res) => {
-  const decodedToken =
-    jwt.verify(
-      req.token,
-      process.env.SECRET,
-      { expiresIn: 30 * 60 } // token expires in 30 * 60 seconds, half hour
-    );
-  if (!decodedToken.id) {
-    res.status(401).json({ error: 'invalid token' });
-  }
-  const user = await User.findById(decodedToken.id);
-  const { body } = req;
-  if (!body.title || !body.url) {
-    res.status(400).end();
-  }
-  const blog = new Blog({
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes ?? 0,
-    user: user.id
+blogsRouter.delete('/:id',
+  middleware.tokenExtractor,
+  middleware.userExtractor,
+  async (req, res) => {
+    const found = await Blog.findById(req.params.id);
+    if (!found) {
+      res.status(404).json({ error: 'delete blog failed: NOT found' });
+    }
+    if (!req.user.id || req.user.id.toString() !== found.user?.toString()) {
+      res.status(401).json({ error: 'delete blog failed: NOT authorized' }).end();
+    } else {
+      await Blog.findByIdAndRemove(req.params.id);
+      res.status(204).end();
+    }
   });
-  const saved = await blog.save();
-  user.blogs = user.blogs.concat(saved.id);
-  await user.save();
-  res.status(201).json(saved);
-});
+
+blogsRouter.post('/',
+  middleware.tokenExtractor,
+  middleware.userExtractor,
+  async (req, res) =>
+  {
+    const { body, user } = req;
+    if (!body.title || !body.url) {
+      res.status(400).end();
+    }
+    const blog = new Blog({
+      title: body.title,
+      author: body.author,
+      url: body.url,
+      likes: body.likes ?? 0,
+      user: user.id
+    });
+    const saved = await blog.save();
+    user.blogs = user.blogs.concat(saved.id);
+    await user.save();
+    res.status(201).json(saved);
+  });
 
 module.exports = blogsRouter;
