@@ -8,7 +8,7 @@ GET http://localhost:3003/blogs/642f7db74f8eeb92e2c7e0a6
 
 ###
 DELETE http://localhost:3003/blogs/6435a921f6e5bf87df05e781
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InR6aGFuZyIsImlkIjoiNjQzNDVjMjk2MTY0MmQxMmFjMGE0NWZlIiwiaWF0IjoxNjgxMjIzNTM5fQ.DKmpZWnGLE1MWkaS0R3qzSvkZlw_9YIaP3qta8SsVo4
+Authorization: bearer xxx.yyy.zzz
 
 ###
 Get http://localhost:3003/info
@@ -16,7 +16,7 @@ Get http://localhost:3003/info
 ###
 POST http://localhost:3003/blogs
 Content-Type: application/json
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InR6aGFuZyIsImlkIjoiNjQzNDVjMjk2MTY0MmQxMmFjMGE0NWZlIiwiaWF0IjoxNjgxMjIzNTM5fQ.DKmpZWnGLE1MWkaS0R3qzSvkZlw_9YIaP3qta8SsVo4
+Authorization: bearer xxx.yyy.zzz
 
 {
   "title": "Middleware Myths",
