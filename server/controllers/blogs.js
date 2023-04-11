@@ -39,8 +39,17 @@ blogsRouter.put('/:id', async (req, res) => {
 });
 
 blogsRouter.delete('/:id', async (req, res) => {
-  await Blog.findByIdAndRemove(req.params.id);
-  res.status(204).end();
+  const found = await Blog.findById(req.params.id);
+  if (!found) {
+    res.status(404).json({ error: 'delete blog failed: NOT found' });
+  }
+  const verifiedToken = jwt.verify(tokenExtractor(req), process.env.SECRET);
+  if (!verifiedToken.id || verifiedToken.id.toString() !== found.user?.toString()) {
+    res.status(401).json({ error: 'delete blog failed: NOT authorized' }).end();
+  } else {
+    await Blog.findByIdAndRemove(req.params.id);
+    res.status(204).end();
+  }
 });
 
 blogsRouter.post('/', async (req, res) => {

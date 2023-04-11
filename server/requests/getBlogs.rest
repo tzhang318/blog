@@ -7,7 +7,8 @@ GET http://localhost:3003/blogs/642f7d114f8eeb92e2c7e0a2
 GET http://localhost:3003/blogs/642f7db74f8eeb92e2c7e0a6
 
 ###
-DELETE http://localhost:3003/blogs/4
+DELETE http://localhost:3003/blogs/643586b19027680b61b73b4b
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InR6aGFuZyIsImlkIjoiNjQzNDVjMjk2MTY0MmQxMmFjMGE0NWZlIiwiaWF0IjoxNjgxMjIzNTM5fQ.DKmpZWnGLE1MWkaS0R3qzSvkZlw_9YIaP3qta8SsVo4
 
 ###
 Get http://localhost:3003/info
