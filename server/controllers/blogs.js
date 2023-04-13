@@ -2,11 +2,13 @@ const middleware = require('../utils/middleware');
 const blogsRouter = require('express').Router();
 const Blog = require('../models/blog');
 
+const findAll = () => Blog
+  .find({}).populate('user', { username: 1, name: 1 });
+
 // error handling is done in middleware by this
 // library: express-async-errors
 blogsRouter.get('/', async (req, res) => {
-  const blogs = await Blog
-    .find({}).populate('user', { username: 1, name: 1 });
+  const blogs = await findAll();
   res.json(blogs);
 });
 
@@ -21,12 +23,13 @@ blogsRouter.get('/:id', async (req, res) => {
 
 blogsRouter.put('/:id', async (req, res) => {
   const { title, author, url, likes } = req.body;
-  const result = await Blog.findByIdAndUpdate(
+  await Blog.findByIdAndUpdate(
     req.params.id,
     { title, author, url, likes },
     { new: true, runValidators: true, context: 'query' }
   );
-  res.json(result);
+  const blogs = await findAll();
+  res.json(blogs);
 });
 
 blogsRouter.delete('/:id',
@@ -41,7 +44,8 @@ blogsRouter.delete('/:id',
       res.status(401).json({ error: 'delete blog failed: NOT authorized' }).end();
     } else {
       await Blog.findByIdAndRemove(req.params.id);
-      res.status(204).end();
+      const blogs = await findAll();
+      res.json(blogs).status(204).end();
     }
   });
 

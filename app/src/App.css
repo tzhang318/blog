@@ -35,6 +35,10 @@
   font-weight: bold;
 }
 
+.warn {
+  background-color: rgb(232 142 142);
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;

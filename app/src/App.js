@@ -25,7 +25,7 @@ function App() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const user = await loginService.login({ username, password});
+      const user = await loginService.login({ username, password });
       setToken(user.token);
       setUser(user);
       setPassword('');
@@ -48,15 +48,15 @@ function App() {
   return (
     <div className="App">
       {user && (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'flex-end',
-              marginRight: '10vh'
-              }}
-            >
-            <button className='logout-button' onClick={logout}>Logout</button>
-          </div>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'flex-end',
+            marginRight: '10vh'
+          }}
+        >
+          <button className='logout-button' onClick={logout}>Logout</button>
+        </div>
       )}
       <Notification
         className='notification'
@@ -65,8 +65,8 @@ function App() {
       {!user && <LoginForm
         username={username}
         password={password}
-        setUsername={e=>setUsername(e.target.value)}
-        setPassword={e=>setPassword(e.target.value)}
+        setUsername={e => setUsername(e.target.value)}
+        setPassword={e => setPassword(e.target.value)}
         handleLogin={handleLogin}
       />}
       {user && <Blogs name={user.name} />}
