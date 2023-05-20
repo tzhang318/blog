@@ -25,5 +25,5 @@ export const LoginForm = props => {
       </div>
       <button className='submit-button' type='submit'>Submit</button>
     </form>
-  )
+  );
 };

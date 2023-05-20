@@ -47,5 +47,5 @@ export const CreateBlog = props => {
       </div>
       <button className='button create-button' onClick={handleClick}>Create</button>
     </div>
-  )
+  );
 };
